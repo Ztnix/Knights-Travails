@@ -59,7 +59,7 @@ boardContainer.addEventListener("click", function (e) {
         endCoords = coords;
         squares[num].style.backgroundColor = "red";
         selectEndBtn.disabled = true;
-        squares[num].innerHTML = `<div class="goal"></div>`;
+        squares[num].innerHTML = `<div class="goal">GOAL</div>`;
         mode = 0;
         break;
     }
@@ -114,7 +114,10 @@ function updateUI(coords, index, prevCoords, ans) {
 
   squares[prevSquare].querySelector(".horse").remove();
   squares[targetSquare].style.backgroundColor = "gray";
-  squares[targetSquare].append(horse);
+  squares[targetSquare].innerHTML = ` 
+  <div class="path">${index}
+    <img src="./knight.svg" class="horse">
+  </div>`;
 
   if (index == ans.length - 1) {
     clearBtn.disabled = false;
