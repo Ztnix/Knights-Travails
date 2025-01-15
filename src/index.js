@@ -1,5 +1,5 @@
 import "./style.css";
-import knight from "./imgs/knight.svg";
+import knight from "./knight.svg";
 
 let SQUARESPERSIDE = 8;
 // let SQUARESIDE = 760 / SQUARESPERSIDE;
