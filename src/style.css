@@ -1,0 +1,86 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex: 1;
+}
+
+.mid {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 2fr 3fr;
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+}
+
+.rightSide {
+  width: 760px;
+  height: 760px;
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+
+.square {
+  outline: 2px black solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.titleArea {
+  font-size: 5rem;
+}
+
+.buttonArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 300px;
+}
+
+.buttonArea button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.path,
+.knight,
+.goal {
+  font-size: 3rem;
+  font-size: bold;
+  text-align: center;
+  color: white;
+}
+
+.path {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0;
+}
+
+.knight,
+.goal {
+  font-size: 2rem;
+}
+
+.horse {
+  height: 55px;
+  width: 55px;
+}

@@ -1,3 +1,128 @@
+import "./style.css";
+
+let SQUARESPERSIDE = 8;
+// let SQUARESIDE = 760 / SQUARESPERSIDE;
+let boardContainer = document.querySelector(".rightSide");
+let placeKnightBtn = document.querySelector(".placeKnightBtn");
+let selectEndBtn = document.querySelector(".selectEndBtn");
+let goBtn = document.querySelector(".goBtn");
+let clearBtn = document.querySelector(".clearBtn");
+let originalCoords = null;
+let endCoords = null;
+let mode = 0;
+let horse = document.createElement("img");
+horse.src = "./imgs/knight.svg";
+horse.classList.add("horse");
+
+(function createGrid() {
+  for (let i = 0; i < SQUARESPERSIDE; i++) {
+    for (let j = 0; j < SQUARESPERSIDE; j++) {
+      let div = document.createElement("div");
+      div.classList.add("square");
+      div.dataset.col = j;
+      div.dataset.row = i;
+      div.dataset.num = i * SQUARESPERSIDE + j;
+      boardContainer.appendChild(div);
+    }
+  }
+  let squares = document.querySelectorAll(".square");
+  squares.forEach((square, i) => {
+    square.style.height = Math.round(760 / SQUARESPERSIDE) + "px";
+    square.style.width = Math.round(760 / SQUARESPERSIDE) + "px";
+    const row = Math.floor(i / SQUARESPERSIDE);
+    const col = i % SQUARESPERSIDE;
+    square.style.backgroundColor = (row + col) % 2 === 0 ? "white" : "black";
+  });
+})();
+
+let squares = document.querySelectorAll(".square");
+
+boardContainer.addEventListener("click", function (e) {
+  if (e.target.classList.contains("square")) {
+    const row = parseInt(e.target.dataset.row, 10);
+    const col = parseInt(e.target.dataset.col, 10);
+    const num = parseInt(e.target.dataset.num, 10);
+    const coords = [row, col];
+
+    switch (mode) {
+      case 0:
+        break;
+      case 1:
+        originalCoords = coords;
+        squares[num].style.backgroundColor = "gray";
+        placeKnightBtn.disabled = true;
+        squares[num].append(horse);
+        mode = 0;
+        break;
+      case 2:
+        endCoords = coords;
+        squares[num].style.backgroundColor = "red";
+        selectEndBtn.disabled = true;
+        squares[num].innerHTML = `<div class="goal">GOAL</div>`;
+        mode = 0;
+        break;
+    }
+  }
+});
+
+placeKnightBtn.addEventListener("click", function () {
+  mode = 1;
+  console.log("Click a square to place the knight");
+});
+
+selectEndBtn.addEventListener("click", function () {
+  mode = 2;
+  console.log("Click a square to set the goal square");
+});
+
+goBtn.addEventListener("click", function () {
+  if (originalCoords && endCoords) {
+    knightTravails(originalCoords, endCoords);
+  } else {
+    console.log("Please set coordinates");
+  }
+});
+
+clearBtn.addEventListener("click", function () {
+  originalCoords = null;
+  endCoords = null;
+  mode = 0;
+  placeKnightBtn.disabled = false;
+  selectEndBtn.disabled = false;
+  goBtn.disabled = false;
+  resetBoard();
+});
+
+function resetBoard() {
+  squares.forEach((square, i) => {
+    square.innerHTML = "";
+    const row = Math.floor(i / SQUARESPERSIDE);
+    const col = i % SQUARESPERSIDE;
+    square.style.backgroundColor = (row + col) % 2 === 0 ? "white" : "black";
+    square.innerHTML = "";
+  });
+  horse.style.transform = "";
+  horse.style.left = "0";
+  horse.style.top = "0";
+}
+
+function updateUI(coords, index, prevCoords, ans) {
+  let targetSquare = coords[0] * SQUARESPERSIDE + coords[1];
+  let prevSquare = prevCoords[0] * SQUARESPERSIDE + prevCoords[1];
+  console.log(coords);
+
+  squares[prevSquare].querySelector(".horse").remove();
+  squares[targetSquare].style.backgroundColor = "gray";
+  squares[targetSquare].innerHTML = ` 
+  <div class="path">${index}
+    <img src="./imgs/knight.svg" class="horse">
+  </div>`;
+
+  if (index == ans.length - 1) {
+    clearBtn.disabled = false;
+  }
+}
+
 const knightMoves = [
   [2, 1],
   [2, -1],
@@ -58,7 +183,15 @@ function printAnswer(parentMap, current) {
     current = parentMap.get(current.toString());
   }
   console.log(`You made it in ${ans.length - 1} moves! Here's your path:`);
-  ans.forEach((element) => console.log(element));
+  let prevCoords = ans[0];
+  placeKnightBtn.disabled = true;
+  selectEndBtn.disabled = true;
+  goBtn.disabled = true;
+  clearBtn.disabled = true;
+  ans.forEach((element, index) => {
+    setTimeout(() => {
+      updateUI(element, index, prevCoords, ans);
+      prevCoords = element;
+    }, index * 500);
+  });
 }
-
-knightTravails([0, 0], [7, 7]);
