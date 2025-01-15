@@ -1,4 +1,5 @@
 import "./style.css";
+import knight from "./imgs/knight.svg";
 
 let SQUARESPERSIDE = 8;
 // let SQUARESIDE = 760 / SQUARESPERSIDE;
@@ -11,7 +12,7 @@ let originalCoords = null;
 let endCoords = null;
 let mode = 0;
 let horse = document.createElement("img");
-horse.src = "./imgs/knight.svg";
+horse.src = knight;
 horse.classList.add("horse");
 
 (function createGrid() {
