@@ -116,7 +116,7 @@ function updateUI(coords, index, prevCoords, ans) {
   squares[targetSquare].style.backgroundColor = "gray";
   squares[targetSquare].innerHTML = ` 
   <div class="path">${index}
-    <img src="./imgs/knight.svg" class="horse">
+    <img src="./knight.svg" class="horse">
   </div>`;
 
   if (index == ans.length - 1) {
